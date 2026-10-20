@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>CampusTrack | Lost & Found Management Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #059669;
+      --primary-hover: #047857;
+      --primary-light: #ecfdf5;
+      --accent-blue: #2563eb;
+      --accent-blue-light: #eff6ff;
+      --surface: #ffffff;
+      --bg: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    h1, h2, h3, h4, .brand span {
+      font-family: 'Outfit', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bg-glow {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 1200px;
+      height: 240px;
+      background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.09) 0%, rgba(37, 99, 235, 0.04) 50%, transparent 80%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Navbar */
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .brand-icon {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+    }
+
+    .brand-title {
+      font-weight: 800;
+      color: #064e3b;
+      font-size: 1.15rem;
+      white-space: nowrap;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #eff6ff, #dbeafe);
+      color: #1d4ed8;
+      font-size: 0.65rem;
+      padding: 3px 7px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      border: 1px solid #bfdbfe;
+      white-space: nowrap;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .user-pill {
+      font-size: 0.8rem;
+      background: var(--primary-light);
+      color: #065f46;
+      padding: 5px 10px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      border: 1px solid #a7f3d0;
+      white-space: nowrap;
+      max-width: 130px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-outline:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    /* Auth Screen */
+    .auth-view {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 14px;
+      z-index: 1;
+    }
+
+    .auth-container {
+      display: flex;
+      width: 100%;
+      max-width: 920px;
+      background: var(--surface);
+      border-radius: 18px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .auth-left {
+      flex: 1.1;
+      background: linear-gradient(145deg, #064e3b 0%, #065f46 50%, #047857 100%);
+      padding: 44px 34px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: white;
+      position: relative;
+    }
+
+    .auth-left h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.18;
+      margin-bottom: 12px;
+    }
+
+    .auth-left p {
+      color: #d1fae5;
+      font-size: 0.96rem;
+      line-height: 1.55;
+    }
+
+    .auth-feature-list {
+      margin-top: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: #ecfdf5;
+    }
+
+    .auth-feature-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .auth-right {
+      flex: 1;
+      padding: 38px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+    }
+
+    .form-card {
+      width: 100%;
+      max-width: 340px;
+    }
+
+    .form-card h2 {
+      font-size: 1.55rem;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      background: #f8fafc;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      background: #ffffff;
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+
+    .primary-btn {
+      width: 100%;
+      padding: 11px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+      transition: all 0.2s;
+    }
+
+    .primary-btn:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      transform: translateY(-1px);
+    }
+
+    .switch-auth {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .switch-auth a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Dashboard Layout */
+    .dashboard-view {
+      flex: 1;
+      max-width: 1240px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 18px 14px;
+      display: grid;
+      grid-template-columns: 2fr 1.15fr;
+      gap: 20px;
+      z-index: 1;
+    }
+
+    /* Stats Quick Bar */
+    .stats-bar {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 0;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .stat-card.clickable {
+      cursor: pointer;
+    }
+
+    .stat-card.clickable:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: #93c5fd;
+    }
+
+    .stat-info {
+      min-width: 0;
+    }
+
+    .stat-info h5 {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .stat-info .stat-num {
+      font-size: 1.35rem;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      color: var(--text-main);
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+
+    .stat-icon {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    /* Feed Controls */
+    .dash-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .dash-title-block h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .top-controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .filter-tabs {
+      display: flex;
+      background: #e2e8f0;
+      border-radius: 8px;
+      padding: 3px;
+    }
+
+    .tab-btn {
+      padding: 6px 14px;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      background: var(--surface);
+      color: #064e3b;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .post-btn {
+      padding: 8px 14px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+      white-space: nowrap;
+    }
+
+    .search-wrapper {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .search-input {
+      padding-left: 38px;
+      margin-bottom: 0;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      font-size: 0.9rem;
+      height: 44px;
+    }
+
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    /* Cards Grid */
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .item-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .item-card.has-match {
+      border: 2px solid #3b82f6;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.12);
+    }
+
+    .ai-match-ribbon {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      padding: 6px 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .ai-match-ribbon .pulse-dot {
+      width: 7px;
+      height: 7px;
+      background: #60a5fa;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.7); }
+      70% { box-shadow: 0 0 0 5px rgba(96, 165, 250, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(96, 165, 250, 0); }
+    }
+
+    .item-img-container {
+      width: 100%;
+      height: 180px;
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-bottom: 1px solid #f1f5f9;
+      cursor: pointer;
+    }
+
+    .item-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .no-img-badge {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .item-content {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .tag {
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .tag-lost { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+    .tag-found { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .tag-claimed { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+    .item-date { font-size: 0.72rem; color: #94a3b8; }
+    
+    .item-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text-main);
+      line-height: 1.3;
+    }
+
+    .item-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 12px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .item-meta {
+      font-size: 0.78rem;
+      color: #475569;
+      background: #f8fafc;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+      border: 1px solid #f1f5f9;
+    }
+
+    .meta-line {
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      word-break: break-word;
+    }
+    .meta-line:last-child { margin-bottom: 0; }
+    .meta-label { font-weight: 700; color: #64748b; font-size: 0.7rem; text-transform: uppercase; }
+
+    .card-actions-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 9px;
+      background: var(--primary-light);
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .action-btn:hover {
+      background: #059669;
+      color: #ffffff;
+      border-color: #059669;
+    }
+
+    .btn-delete-card {
+      padding: 9px 12px;
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-delete-card:hover {
+      background: #dc2626;
+      color: #ffffff;
+    }
+
+    /* Chat Panel */
+    .chat-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      height: 640px;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-header h3 {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .online-indicator {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.74rem;
+      color: #059669;
+      font-weight: 700;
+      background: #ecfdf5;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      border: 1px solid #a7f3d0;
+    }
+
+    .online-dot {
+      width: 6px;
+      height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 14px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #f8fafc;
+    }
+
+    .chat-bubble {
+      padding: 9px 12px;
+      border-radius: 12px;
+      max-width: 88%;
+      font-size: 0.84rem;
+      line-height: 1.4;
+      box-shadow: var(--shadow-sm);
+      word-break: break-word;
+    }
+
+    .chat-bubble.incoming {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+      border-bottom-left-radius: 3px;
+    }
+
+    .chat-bubble.outgoing {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
+      align-self: flex-end;
+      border-bottom-right-radius: 3px;
+    }
+
+    .chat-sender {
+      font-size: 0.72rem;
+      font-weight: 800;
+      margin-bottom: 2px;
+      display: block;
+      color: #065f46;
+    }
+
+    .chat-bubble.outgoing .chat-sender { color: #d1fae5; }
+
+    .chat-time {
+      font-size: 0.68rem;
+      margin-top: 3px;
+      display: block;
+      opacity: 0.7;
+      text-align: right;
+    }
+
+    .chat-form {
+      padding: 10px 12px;
+      border-top: 1px solid var(--border);
+      background: #ffffff;
+      display: flex;
+      gap: 6px;
+    }
+
+    .chat-input {
+      margin-bottom: 0;
+      padding: 9px 12px;
+      font-size: 0.86rem;
+      border-radius: var(--radius-full);
+      background: #f1f5f9;
+    }
+
+    .chat-send-btn {
+      padding: 0 16px;
+      background: #059669;
+      color: white;
+      border: none;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 14px;
+    }
+
+    .modal-box {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 22px;
+      width: 100%;
+      max-width: 480px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      position: relative;
+      border: 1px solid var(--border);
+    }
+
+    .modal-box.wide {
+      max-width: 680px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: #f1f5f9;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .claim-info-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin: 14px 0;
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    .modal-img-preview {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .split-compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .compare-side {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      font-size: 0.84rem;
+      line-height: 1.5;
+    }
+
+    .compare-side h4 {
+      font-size: 0.92rem;
+      margin-bottom: 8px;
+    }
+
+    .match-score-badge {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1e40af;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      font-weight: 800;
+      font-size: 0.95rem;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .token-chip {
+      display: inline-block;
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.74rem;
+      margin: 2px;
+      font-weight: 700;
+    }
+
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+    .btn-danger:hover { background: #dc2626; }
+
+    .btn-warning {
+      background: #f59e0b;
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+    .btn-warning:hover { background: #d97706; }
+
+    .hidden { display: none !important; }
+
+    /* ========================================================
+       RESPONSIVE MOBILE & APP BREAKPOINTS (Pixel-Perfect Alignment)
+       ======================================================== */
+    @media (max-width: 990px) {
+      .dashboard-view {
+        grid-template-columns: 1fr;
+        padding: 14px 10px;
+        gap: 18px;
+      }
+
+      .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .chat-panel {
+        height: 480px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 10px 12px;
+      }
+
+      .brand-title {
+        font-size: 1.05rem;
+      }
+
+      .brand-badge {
+        display: none; /* Hide subtitle badge on small phones to prevent header stretching */
+      }
+
+      .user-pill {
+        max-width: 90px;
+        font-size: 0.75rem;
+        padding: 4px 8px;
+      }
+
+      .btn-outline {
+        padding: 5px 9px;
+        font-size: 0.75rem;
+      }
+
+      .dash-topbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+
+      .dash-title-block {
+        text-align: left;
+      }
+
+      .top-controls {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .filter-tabs {
+        flex: 1;
+        justify-content: space-between;
+      }
+
+      .tab-btn {
+        flex: 1;
+        padding: 6px 8px;
+        text-align: center;
+      }
+
+      .post-btn {
+        padding: 8px 12px;
+      }
+
+      .items-grid {
+        grid-template-columns: 1fr; /* Full single column on smartphone screens */
+      }
+
+      .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .stat-card {
+        padding: 10px 12px;
+      }
+
+      .stat-info .stat-num {
+        font-size: 1.2rem;
+      }
+
+      .split-compare-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-box {
+        padding: 18px 14px;
+        border-radius: 14px;
+      }
+
+      .auth-container {
+        flex-direction: column;
+      }
+
+      .auth-left {
+        padding: 28px 20px;
+      }
+
+      .auth-left h1 {
+        font-size: 1.8rem;
+      }
+
+      .auth-right {
+        padding: 28px 20px;
+      }
+    }
+  </style>
+
+  <!-- PWA & Mobile App Enhancements -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#065f46">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="CampusTrack">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+
+  <header>
+    <a href="#" class="brand-wrap">
+      <div class="brand-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+      <span class="brand-title">CampusTrack</span>
+      <span class="brand-badge">Campus Portal</span>
+    </a>
+    <div class="nav-actions">
+      <span id="userBadge" class="user-pill hidden"></span>
+      <button id="logoutBtn" class="btn-outline hidden">Log out</button>
+    </div>
+  </header>
+
+  <!-- Login/Register View -->
+  <main id="authView" class="auth-view">
+    <div class="auth-container">
+      <div class="auth-left">
+        <div>
+          <span style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #a7f3d0;">Campus Asset Network</span>
+          <h1 style="margin-top: 8px;">Where lost things find their way back.</h1>
+          <p>Real-time institutional lost & found with smart semantic pair matching and direct WhatsApp handover.</p>
+          
+          <div class="auth-feature-list">
+            <div class="auth-feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Instant Cross-Campus Synchronization</span>
+            </div>
+            <div class="auth-feature-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Keyword & category indexing across departments</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="font-size: 0.75rem; opacity: 0.75; padding-top: 16px;">
+          Campus Asset Recovery Network &bull; Student &amp; Faculty Portal
+        </div>
+      </div>
+
+      <div class="auth-right">
+        <div class="form-card" id="registerCard">
+          <h2>Create account</h2>
+          <p class="subtitle">Join using your college details.</p>
+          <form id="registerForm">
+            <label>Full name</label>
+            <input type="text" id="regName" placeholder="e.g. Faizal" required>
+
+            <label>College email</label>
+            <input type="email" id="regEmail" placeholder="your.name@college.ac.in" required>
+
+            <label>Password</label>
+            <input type="password" id="regPassword" placeholder="••••••••" required>
+
+            <button type="submit" class="primary-btn">Create account</button>
+          </form>
+          <div id="registerMsg" class="status-msg"></div>
+          <p class="switch-auth">Already registered? <a id="linkToLogin">Login</a></p>
+        </div>
+
+        <div class="form-card hidden" id="loginCard">
+          <h2>Welcome back</h2>
+          <p class="subtitle">Sign in to your college account.</p>
+          <form id="loginForm">
+            <label>College email</label>
+            <input type="email" id="logEmail" placeholder="your.name@college.ac.in" required>
+
+            <label>Password</label>
+            <input type="password" id="logPassword" placeholder="••••••••" required>
+
+            <button type="submit" class="primary-btn">Sign in</button>
+          </form>
+          <div id="loginMsg" class="status-msg"></div>
+          <p class="switch-auth">Need an account? <a id="linkToRegister">Create account</a></p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Dashboard + Chat View -->
+  <main id="dashboardView" class="dashboard-view hidden">
+    <!-- Top Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-info">
+          <h5>Total Notices</h5>
+          <div id="statTotalItems" class="stat-num">0</div>
+        </div>
+        <div class="stat-icon" style="background: #ecfdf5; color: #059669;">📋</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-info">
+          <h5>Lost Articles</h5>
+          <div id="statLostItems" class="stat-num">0</div>
+        </div>
+        <div class="stat-icon" style="background: #fee2e2; color: #b91c1c;">🔍</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-info">
+          <h5>Recovered</h5>
+          <div id="statFoundItems" class="stat-num">0</div>
+        </div>
+        <div class="stat-icon" style="background: #dcfce7; color: #15803d;">🎉</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-info">
+          <h5>Claimed / Resolved</h5>
+          <div id="statClaimedItems" class="stat-num" style="color: #2563eb;">0</div>
+        </div>
+        <div class="stat-icon" style="background: #eff6ff; color: #2563eb;">🤝</div>
+      </div>
+    </div>
+
+    <!-- Left Column: Items Feed -->
+    <section>
+      <div class="dash-topbar">
+        <div class="dash-title-block">
+          <h2>Campus Item Feed</h2>
+          <p class="subtitle" style="margin-bottom: 0;">Centralized catalog of lost and found articles across all campus floors.</p>
+        </div>
+        <div class="top-controls">
+          <div class="filter-tabs">
+            <button class="tab-btn active" data-filter="all">All</button>
+            <button class="tab-btn" data-filter="lost">Lost</button>
+            <button class="tab-btn" data-filter="found">Found</button>
+          </div>
+          <button id="openModalBtn" class="post-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            + Report
+          </button>
+        </div>
+      </div>
+
+      <div class="search-wrapper">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by item, room, floor, or keyword...">
+      </div>
+
+      <div id="itemsGrid" class="items-grid"></div>
+    </section>
+
+    <!-- Right Column: Live Chat Box -->
+    <aside class="chat-panel">
+      <div class="chat-header">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          Campus Live Chat
+        </h3>
+        <div class="online-indicator">
+          <span class="online-dot"></span>
+          <span>Online</span>
+        </div>
+      </div>
+      <div id="chatMessages" class="chat-messages"></div>
+      <form id="chatForm" class="chat-form">
+        <input type="text" id="chatInput" class="chat-input" placeholder="Type a message or claim..." required>
+        <button type="submit" class="chat-send-btn">Send</button>
+      </form>
+    </aside>
+  </main>
+
+  <!-- Interactive Contact / Details Modal -->
+  <div id="contactModal" class="modal-backdrop hidden">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeContactModal()">&times;</button>
+      <h3 id="modalTitle" style="margin-bottom: 4px; font-size: 1.25rem;">Item Details</h3>
+      <p id="modalSubtitle" class="subtitle" style="margin-bottom: 12px;"></p>
+      
+      <img id="modalItemImg" class="modal-img-preview hidden" src="" alt="Item photo">
+
+      <div class="claim-info-box">
+        <p><strong>Item:</strong> <span id="modalItemName"></span></p>
+        <p><strong>Location:</strong> <span id="modalItemLocation"></span></p>
+        <p><strong>Reported By:</strong> <span id="modalItemReporter"></span></p>
+        <p><strong>Phone / WhatsApp:</strong> <span id="modalItemContact" style="color: #059669; font-weight: 800;"></span></p>
+        <p style="margin-top: 6px;"><strong>Description:</strong> <span id="modalItemDesc"></span></p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button id="changeStatusBtn" class="primary-btn" style="background: #2563eb;">Mark as Found & Move to Found Tab</button>
+        
+        <div style="display: flex; gap: 8px;">
+          <button id="whatsappDirectBtn" class="primary-btn" style="flex: 1; background: #25D366;">WhatsApp</button>
+          <button class="primary-btn" style="flex: 1; background: #059669;" onclick="sendItemToCampusChat()">Send in Chat</button>
+        </div>
+
+        <button id="removePhotoBtn" class="btn-warning hidden" onclick="deleteItemPhotoOnly()">Remove Photo Only</button>
+        <button id="deletePostBtn" class="btn-danger hidden" onclick="deleteActivePost()">Delete This Notice</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Item Modal with Photo Upload -->
+  <div id="postModal" class="modal-backdrop hidden">
+    <div class="modal-box">
+      <button id="closeModalBtn" class="modal-close">&times;</button>
+      <h3 style="margin-bottom: 4px; font-size: 1.25rem;">Report an Item</h3>
+      <p class="subtitle" style="margin-bottom: 14px;">Post details & upload a photo to notify students.</p>
+
+      <form id="addItemForm">
+        <label>Type of Report</label>
+        <select id="itemType" required>
+          <option value="lost">Lost (I lost something)</option>
+          <option value="found">Found (I found something)</option>
+        </select>
+
+        <label>Item Name</label>
+        <input type="text" id="itemTitle" placeholder="e.g. Casio fx-991EX Calculator, ID Card, Watch" required>
+
+        <label>Item Photograph (Optional, but recommended)</label>
+        <div class="file-input-wrapper" style="margin-bottom: 12px;">
+          <input type="file" id="itemPhotoInput" accept="image/*" style="margin-bottom: 4px;">
+          <img id="filePreviewMini" style="max-height: 80px; display: none; margin-top: 4px; border-radius: 6px; border: 1px solid #cbd5e1;" src="" alt="Preview">
+        </div>
+
+        <label>Campus Location / Classroom</label>
+        <input type="text" id="itemLocation" placeholder="e.g. Computer Lab 3, Library 2nd Floor, Canteen" required>
+
+        <label>Contact Phone (WhatsApp)</label>
+        <input type="text" id="itemContact" placeholder="e.g. +91 9876543210" required>
+
+        <label>Description & Unique Markings</label>
+        <textarea id="itemDescription" rows="3" placeholder="Color, brand stickers, scratches, or time seen..." required></textarea>
+
+        <button type="submit" id="submitReportBtn" class="primary-btn">Submit Report</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const FIREBASE_DB_URL = "https://lost-n-found-b4209-default-rtdb.firebaseio.com";
+    const STORAGE_KEY_SESSION = "current_logged_user_v2";
+
+    const authView = document.getElementById("authView");
+    const dashboardView = document.getElementById("dashboardView");
+    const registerCard = document.getElementById("registerCard");
+    const loginCard = document.getElementById("loginCard");
+    const linkToLogin = document.getElementById("linkToLogin");
+    const linkToRegister = document.getElementById("linkToRegister");
+    const registerForm = document.getElementById("registerForm");
+    const loginForm = document.getElementById("loginForm");
+    const userBadge = document.getElementById("userBadge");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const itemsGrid = document.getElementById("itemsGrid");
+    const searchInput = document.getElementById("searchInput");
+    const postModal = document.getElementById("postModal");
+    const openModalBtn = document.getElementById("openModalBtn");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const addItemForm = document.getElementById("addItemForm");
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    const chatMessages = document.getElementById("chatMessages");
+    const chatForm = document.getElementById("chatForm");
+    const chatInput = document.getElementById("chatInput");
+    const contactModal = document.getElementById("contactModal");
+    const changeStatusBtn = document.getElementById("changeStatusBtn");
+    const itemPhotoInput = document.getElementById("itemPhotoInput");
+    const filePreviewMini = document.getElementById("filePreviewMini");
+    const submitReportBtn = document.getElementById("submitReportBtn");
+    const modalItemImg = document.getElementById("modalItemImg");
+    const removePhotoBtn = document.getElementById("removePhotoBtn");
+    const deletePostBtn = document.getElementById("deletePostBtn");
+
+    // Stats Elements
+    const statTotalItems = document.getElementById("statTotalItems");
+    const statLostItems = document.getElementById("statLostItems");
+    const statFoundItems = document.getElementById("statFoundItems");
+    const statMatchPairs = document.getElementById("statMatchPairs");
+
+    // Image Compression Helper
+    itemPhotoInput.addEventListener("change", function(e) {
+      const file = e.target.files[0];
+      if (!file) {
+        currentBase64Image = "";
+        filePreviewMini.style.display = "none";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement("canvas");
+          const maxDim = 600;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height && width > maxDim) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else if (height > maxDim) {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+
+          currentBase64Image = canvas.toDataURL("image/jpeg", 0.65);
+          filePreviewMini.src = currentBase64Image;
+          filePreviewMini.style.display = "block";
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    linkToLogin.onclick = () => { registerCard.classList.add("hidden"); loginCard.classList.remove("hidden"); };
+    linkToRegister.onclick = () => { loginCard.classList.add("hidden"); registerCard.classList.remove("hidden"); };
+
+    async function cloudGet(path) {
+      try {
+        const cleanUrl = FIREBASE_DB_URL.replace(/\/$/, "");
+        const res = await fetch(`${cleanUrl}/${path}.json`);
+        return await res.json();
+      } catch (err) {
+        console.error("Cloud fetch error:", err);
+        return null;
+      }
+    }
+
+    async function cloudPost(path, data) {
+      try {
+        const cleanUrl = FIREBASE_DB_URL.replace(/\/$/, "");
+        const res = await fetch(`${cleanUrl}/${path}.json`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        return await res.json();
+      } catch (err) {
+        console.error("Cloud post error:", err);
+        return null;
+      }
+    }
+
+    async function cloudPatch(path, data) {
+      try {
+        const cleanUrl = FIREBASE_DB_URL.replace(/\/$/, "");
+        const res = await fetch(`${cleanUrl}/${path}.json`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        return await res.json();
+      } catch (err) {
+        console.error("Cloud patch error:", err);
+        return null;
+      }
+    }
+
+    async function cloudDelete(path) {
+      try {
+        const cleanUrl = FIREBASE_DB_URL.replace(/\/$/, "");
+        const res = await fetch(`${cleanUrl}/${path}.json`, {
+          method: "DELETE"
+        });
+        return await res.json();
+      } catch (err) {
+        console.error("Cloud delete error:", err);
+        return null;
+      }
+    }
+
+    registerForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("regName").value.trim();
+      const email = document.getElementById("regEmail").value.trim().toLowerCase();
+      const password = document.getElementById("regPassword").value;
+
+      await cloudPost("users", { name, email, password });
+      setCurrentUser({ name, email });
+    };
+
+    loginForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("logEmail").value.trim().toLowerCase();
+      const password = document.getElementById("logPassword").value;
+
+      const usersObj = await cloudGet("users");
+      const usersList = usersObj ? Object.values(usersObj) : [];
+      const user = usersList.find(u => u.email === email && u.password === password);
+
+      if (!user) {
+        document.getElementById("loginMsg").className = "status-msg error";
+        document.getElementById("loginMsg").textContent = "Invalid college email or password.";
+        return;
+      }
+      setCurrentUser(user);
+    };
+
+    function setCurrentUser(user) {
+      if (user) {
+        localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify(user));
+        authView.classList.add("hidden");
+        dashboardView.classList.remove("hidden");
+        userBadge.classList.remove("hidden");
+        logoutBtn.classList.remove("hidden");
+        userBadge.textContent = "Hi, " + user.name;
+        syncCloudData();
+      } else {
+        localStorage.removeItem(STORAGE_KEY_SESSION);
+        authView.classList.remove("hidden");
+        dashboardView.classList.add("hidden");
+        userBadge.classList.add("hidden");
+        logoutBtn.classList.add("hidden");
+      }
+    }
+
+    logoutBtn.onclick = () => setCurrentUser(null);
+
+    const activeUser = localStorage.getItem(STORAGE_KEY_SESSION);
+    if (activeUser) setCurrentUser(JSON.parse(activeUser));
+
+    async function syncCloudData() {
+      const itemsObj = await cloudGet("items");
+      if (itemsObj) {
+        cachedItems = Object.keys(itemsObj).map(key => ({
+          firebaseId: key,
+          ...itemsObj[key]
+        })).reverse();
+      } else {
+        cachedItems = [];
+      }
+
+      statTotalItems.textContent = cachedItems.length;
+      statLostItems.textContent = cachedItems.filter(i => i.type === 'lost').length;
+      statFoundItems.textContent = cachedItems.filter(i => i.type === 'found').length;
+      document.getElementById("statClaimedItems").textContent = cachedItems.filter(i => i.type === 'claimed').length;
+
+      renderItems();
+
+      const messagesObj = await cloudGet("messages");
+      const msgs = messagesObj ? Object.values(messagesObj) : [];
+      renderChat(msgs);
+    }
+
+    setInterval(() => {
+      if (!dashboardView.classList.contains("hidden")) {
+        syncCloudData();
+      }
+    }, 2500);
+
+    function renderItems() {
+      const filtered = cachedItems.filter(item => {
+        const matchesTab = currentFilter === "all" || item.type === currentFilter;
+        const matchesQuery = (item.title || "").toLowerCase().includes(searchQuery) ||
+                             (item.location || "").toLowerCase().includes(searchQuery) ||
+                             (item.description || "").toLowerCase().includes(searchQuery);
+        return matchesTab && matchesQuery;
+      });
+
+      if (filtered.length === 0) {
+        itemsGrid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 50px 14px; background: white; border-radius: 14px; border: 1px dashed #cbd5e1; color: #94a3b8;">
+            <div style="font-size: 2.2rem; margin-bottom: 6px;">📭</div>
+            <h4 style="font-size: 1.05rem; color: #475569; margin-bottom: 4px;">No notices in this category</h4>
+            <p style="font-size: 0.82rem;">Be the first to post an item or try searching another keyword.</p>
+          </div>
+        `;
+        return;
+      }
+
+      itemsGrid.innerHTML = filtered.map(item => {
+        const userOwnsThis = isItemOwner(item);
+        const itemType = (item.type || 'lost').toLowerCase();
+        const tagClass = itemType === 'lost' ? 'tag-lost' : (itemType === 'found' ? 'tag-found' : 'tag-claimed');
+        const cleanTitle = (item.title || 'Untitled Item').replace(/'/g, "");
+
+        return `
+          <div class="item-card">
+            ${item.image ? `
+              <div class="item-img-container" onclick='openContactModal(${JSON.stringify(item)})'>
+                <img src="${item.image}" alt="${cleanTitle}" loading="lazy">
+              </div>
+            ` : `
+              <div class="item-img-container" onclick='openContactModal(${JSON.stringify(item)})'>
+                <div class="no-img-badge">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                  <span>No photo attached</span>
+                </div>
+              </div>
+            `}
+            <div class="item-content">
+              <div>
+                <div class="item-header">
+                  <span class="tag ${tagClass}">${item.type || 'Notice'}</span>
+                  <span class="item-date">${item.date || 'Recently'}</span>
+                </div>
+                <h3 class="item-title">${item.title || 'Untitled'}</h3>
+                <p class="item-desc">${item.description || 'No description provided.'}</p>
+              </div>
+              <div>
+                <div class="item-meta">
+                  <div class="meta-line">
+                    <span class="meta-label">Location:</span> 
+                    <span style="font-weight: 600; color: #1e293b;">${item.location || 'Campus'}</span>
+                  </div>
+                  <div class="meta-line">
+                    <span class="meta-label">Reported by:</span> 
+                    <span>${item.reportedBy || 'Student'}</span>
+                  </div>
+                </div>
+                <div class="card-actions-row">
+                  <button class="action-btn" onclick='openContactModal(${JSON.stringify(item)})'>
+                    ${itemType === 'lost' ? 'I Found This' : 'Claim Item'}
+                  </button>
+                  ${userOwnsThis ? `
+                    <button class="btn-delete-card" title="Delete Your Notice" onclick='quickDeleteItem("${item.firebaseId}", "${cleanTitle}", "${item.reporterEmail || ""}", "${item.reportedBy || ""}")'>
+                      🗑
+                    </button>
+                  ` : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.openContactModal = function(item) {
+      selectedActiveItem = item;
+      document.getElementById("modalTitle").textContent = item.type === 'lost' ? 'Found this item?' : 'Claim this item';
+      document.getElementById("modalSubtitle").textContent = `Details for ${item.title}:`;
+      document.getElementById("modalItemName").textContent = item.title;
+      document.getElementById("modalItemLocation").textContent = item.location;
+      document.getElementById("modalItemReporter").textContent = item.reportedBy;
+      document.getElementById("modalItemContact").textContent = item.contact;
+      document.getElementById("modalItemDesc").textContent = item.description;
+
+      const userOwnsThis = isItemOwner(item);
+
+      if (item.image) {
+        modalItemImg.src = item.image;
+        modalItemImg.classList.remove("hidden");
+        if (userOwnsThis) {
+          removePhotoBtn.classList.remove("hidden");
+        } else {
+          removePhotoBtn.classList.add("hidden");
+        }
+      } else {
+        modalItemImg.classList.add("hidden");
+        removePhotoBtn.classList.add("hidden");
+      }
+
+      if (userOwnsThis) {
+        deletePostBtn.classList.remove("hidden");
+      } else {
+        deletePostBtn.classList.add("hidden");
+      }
+
+      if (item.type === 'lost') {
+        changeStatusBtn.classList.remove("hidden");
+        changeStatusBtn.textContent = "Mark as Found (Move to Found section)";
+        changeStatusBtn.onclick = () => updateItemStatus(item, "found");
+      } else {
+        changeStatusBtn.classList.remove("hidden");
+        changeStatusBtn.textContent = "Mark as Resolved / Claimed";
+        changeStatusBtn.onclick = () => updateItemStatus(item, "claimed");
+      }
+
+      const cleanPhone = (item.contact || "").replace(/[^0-9]/g, '');
+      const waBtn = document.getElementById("whatsappDirectBtn");
+      waBtn.onclick = () => {
+        const waMsg = encodeURIComponent(`Hi ${item.reportedBy}, regarding your post "${item.title}" on Campus Lost & Found.`);
+        window.open(`https://wa.me/${cleanPhone}?text=${waMsg}`, '_blank');
+      };
+
+      contactModal.classList.remove("hidden");
+    };
+
+    window.deleteActivePost = async function() {
+      if (!selectedActiveItem || !selectedActiveItem.firebaseId) return;
+
+      if (!isItemOwner(selectedActiveItem)) {
+        alert("Permission Denied: You can only delete notices that you created.");
+        return;
+      }
+
+      if (!confirm(`Are you sure you want to delete your notice for "${selectedActiveItem.title}"?`)) return;
+
+      const title = selectedActiveItem.title;
+      await cloudDelete(`items/${selectedActiveItem.firebaseId}`);
+      
+      const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEY_SESSION) || '{"name":"Author"}');
+      await cloudPost("messages", {
+        sender: "Notice Board",
+        text: `🗑 ${currentUser.name} removed their notice for "${title}".`,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+
+      closeContactModal();
+      await syncCloudData();
+    };
+
+    window.quickDeleteItem = async function(firebaseId, title, reporterEmail, reportedBy) {
+      const activeUser = JSON.parse(localStorage.getItem(STORAGE_KEY_SESSION) || "{}");
+      const userEmail = (activeUser.email || "").toLowerCase().trim();
+      const userName = (activeUser.name || "").toLowerCase().trim();
+      const itemEmail = (reporterEmail || "").toLowerCase().trim();
+      const itemAuthor = (reportedBy || "").toLowerCase().trim();
+
+      const isAllowed = (itemEmail && userEmail === itemEmail) ||
+                        (!itemEmail && userName === itemAuthor) ||
+                        userEmail.includes("admin");
+
+      if (!isAllowed) {
+        alert("Permission Denied: You can only delete notices that you created.");
+        return;
+      }
+
+      if (!confirm(`Are you sure you want to delete your notice for "${title}"?`)) return;
+      await cloudDelete(`items/${firebaseId}`);
+      
+      await cloudPost("messages", {
+        sender: "Notice Board",
+        text: `🗑 Notice for "${title}" was removed by author.`,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+      await syncCloudData();
+    };
+
+    window.deleteItemPhotoOnly = async function() {
+      if (!selectedActiveItem || !selectedActiveItem.firebaseId) return;
+
+      if (!isItemOwner(selectedActiveItem)) {
+        alert("Permission Denied: You can only modify photos on your own notices.");
+        return;
+      }
+
+      if (!confirm("Are you sure you want to remove the photo from your notice?")) return;
+
+      await cloudPatch(`items/${selectedActiveItem.firebaseId}`, { image: null });
+      selectedActiveItem.image = null;
+      modalItemImg.classList.add("hidden");
+      removePhotoBtn.classList.add("hidden");
+
+      await syncCloudData();
+      alert("Photo removed successfully!");
+    };
+
+    async function updateItemStatus(item, newStatus) {
+      if (!item.firebaseId) return;
+      const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEY_SESSION) || '{"name":"A student"}');
+      
+      changeStatusBtn.textContent = "Updating...";
+      await cloudPatch(`items/${item.firebaseId}`, { type: newStatus });
+      
+      await cloudPost("messages", {
+        sender: "Notice Board",
+        text: `✅ ${currentUser.name} marked "${item.title}" as ${newStatus.toUpperCase()}!`,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+
+      closeContactModal();
+      await syncCloudData();
+    }
+
+    window.closeContactModal = function() {
+      contactModal.classList.add("hidden");
+    };
+
+    window.sendItemToCampusChat = async function() {
+      if (!selectedActiveItem) return;
+      const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEY_SESSION) || '{"name":"Me"}');
+      const actionText = selectedActiveItem.type === 'found' ? "wants to claim" : "found";
+      const messageText = `📢 ${currentUser.name} ${actionText}: "${selectedActiveItem.title}" (Location: ${selectedActiveItem.location}). Contact: ${selectedActiveItem.contact}`;
+      
+      await cloudPost("messages", {
+        sender: currentUser.name,
+        text: messageText,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+      closeContactModal();
+      syncCloudData();
+    };
+
+    function renderChat(msgs) {
+      const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEY_SESSION) || "{}");
+
+      chatMessages.innerHTML = msgs.map(m => {
+        const isMine = m.sender === currentUser.name;
+        return `
+          <div class="chat-bubble ${isMine ? 'outgoing' : 'incoming'}">
+            <span class="chat-sender">${isMine ? 'You' : m.sender}</span>
+            <div>${m.text}</div>
+            <span class="chat-time">${m.time}</span>
+          </div>
+        `;
+      }).join('');
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    chatForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const msg = chatInput.value.trim();
+      if (!msg) return;
+
+      const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEY_SESSION) || '{"name":"Student"}');
+      await cloudPost("messages", {
+        sender: currentUser.name,
+        text: msg,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+      chatInput.value = "";
+      syncCloudData();
+    };
+
+    tabBtns.forEach(btn => {
+      btn.onclick = () => {
+        tabBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentFilter = btn.dataset.filter;
+        renderItems();
+      };
+    });
+
+    searchInput.oninput = (e) => {
+      searchQuery = e.target.value.toLowerCase().trim();
+      renderItems();
+    };
+
+    openModalBtn.onclick = () => {
+      currentBase64Image = "";
+      filePreviewMini.src = "";
+      filePreviewMini.style.display = "none";
+      itemPhotoInput.value = "";
+      postModal.classList.remove("hidden");
+    };
+    closeModalBtn.onclick = () => postModal.classList.add("hidden");
+
+    addItemForm.onsubmit = async (e) => {
+      e.preventDefault();
+      submitReportBtn.textContent = "Uploading...";
+      submitReportBtn.disabled = true;
+
+      const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEY_SESSION) || "{}");
+      const newItem = {
+        type: document.getElementById("itemType").value,
+        title: document.getElementById("itemTitle").value.trim(),
+        location: document.getElementById("itemLocation").value.trim(),
+        contact: document.getElementById("itemContact").value.trim(),
+        description: document.getElementById("itemDescription").value.trim(),
+        image: currentBase64Image || null,
+        reportedBy: currentUser.name || "Student",
+        reporterEmail: (currentUser.email || "").toLowerCase().trim(),
+        date: "Just now"
+      };
+
+      await cloudPost("items", newItem);
+      await cloudPost("messages", {
+        sender: "Notice Board",
+        text: `New ${newItem.type.toUpperCase()}: ${newItem.title} at ${newItem.location} ${newItem.image ? '(Photo attached 📷)' : ''}`,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+
+      submitReportBtn.textContent = "Submit Report";
+      submitReportBtn.disabled = false;
+      addItemForm.reset();
+      currentBase64Image = "";
+      filePreviewMini.style.display = "none";
+      postModal.classList.add("hidden");
+      syncCloudData();
+    };
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('App ServiceWorker active:', reg.scope))
+          .catch(err => console.log('SW registration skipped:', err));
+      });
+    }
+  </script>
+
+</body>
+</html>
